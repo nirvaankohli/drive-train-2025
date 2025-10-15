@@ -1,4 +1,5 @@
 #include "main.h"
+#include "lemlib/api.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -7,14 +8,13 @@
 
 // Chassis constructor
 ez::Drive chassis(
-    // These are your drive motors, the first motor is used for sensing!
+     // These are your drive motors, the first motor is used for sensing!
     {-12, -13, -14},     // Left Chassis Ports (negative port will reverse it!)
     {1, 2, 3},  // Right Chassis Ports (negative port will reverse it!)
 
     4,      // IMU Port
     2.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     343);   // Wheel RPM = cartridge * (motor gear / wheel gear)
-
 // Uncomment the trackers you're using here!
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)
 //  - you should get positive values on the encoders going FORWARD and RIGHT
