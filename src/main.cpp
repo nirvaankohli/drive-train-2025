@@ -1,19 +1,30 @@
 #include "main.h"
 #include "lemlib/api.hpp"
 
+// lemLib setup
+
+
+
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
 // https://ez-robotics.github.io/EZ-Template/
 /////
-
+// 35.25
 // Chassis constructor
 ez::Drive chassis(
      // These are your drive motors, the first motor is used for sensing!
     {-12, -13, -14},     // Left Chassis Ports (negative port will reverse it!)
     {1, 2, 3},  // Right Chassis Ports (negative port will reverse it!)
     4,      // IMU Port
-    2.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    343);   // Wheel RPM = cartridge * (motor gear / wheel gear)
+    3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    (600 * (36 / 60)));   // Wheel RPM = cartridge * (motor gear / wheel gear)
+
+
+
+// 8 is X, 5 is Y
+
+
+
 // Uncomment the trackers you're using here!.
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)
 //  - you should get positive values on the encoders going FORWARD and 
@@ -21,13 +32,23 @@ ez::Drive chassis(
 // - `4.0` is the distance from the center of the wheel to the center of the robot
 // ez::tracking_wheel horiz_tracker(8, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels
 // ez::tracking_wheel vert_tracker(9, 2.75, 4.0);   // This tracking wheel is parallel to the drive wheels
-
+// 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
+void ghandhi67HaveMyKid() {
+
+  for (int i = 0; i < 67; i++) {
+
+    cout << "Oops, another one popped out! This is number " << i << " with Kurokame"
+    
+  }
+  
+}
 void initialize() {
   // Print our branding over your terminal :D
   ez::ez_template_print();
