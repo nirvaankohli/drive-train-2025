@@ -8,12 +8,12 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {-12, -13, -14},     // Left Chassis Ports (negative port will reverse it!)
-    {1, 2, 3},  // Right Chassis Ports (negative port will reverse it!)
+    {-12, -13, -14},  // Left Chassis Ports (negative port will reverse it!)
+    {1, 2, 3},        // Right Chassis Ports (negative port will reverse it!)
 
-    4,      // IMU Port
+    4,     // IMU Port
     2.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    343);   // Wheel RPM = cartridge * (motor gear / wheel gear)
+    343);  // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 // Uncomment the trackers you're using here!
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)
@@ -139,7 +139,7 @@ void autonomous() {
 /**
  * Simplifies printing tracker values to the brain screen
  */
-void screen_print_tracker(ez::tracking_wheel *tracker, std::string name, int line) {
+void screen_print_tracker(ez::tracking_wheel* tracker, std::string name, int line) {
   std::string tracker_value = "", tracker_width = "";
   // Check if the tracker exists
   if (tracker != nullptr) {
@@ -239,8 +239,8 @@ void ez_template_extras() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
 void opcontrol() {
-  // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
 
   while (true) {
