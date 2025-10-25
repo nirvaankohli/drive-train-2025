@@ -5,6 +5,9 @@
 // https://ez-robotics.github.io/EZ-Template/
 /////
 
+ez::tracking_wheel horiz_tracker(5, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels
+ez::tracking_wheel vert_tracker(8, 2.75, 4.0);
+
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
@@ -34,6 +37,9 @@ void initialize() {
   ez::ez_template_print();
 
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
+
+  chassis.odom_tracker_back_set(&horiz_tracker);
+  chassis.odom_tracker_left_set(&vert_tracker);
 
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
   //  - change `back` to `front` if the tracking wheel is in front of the midline
@@ -77,6 +83,7 @@ void initialize() {
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
+
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
 }
 
@@ -139,7 +146,7 @@ void autonomous() {
 /**
  * Simplifies printing tracker values to the brain screen
  */
-void screen_print_tracker(ez::tracking_wheel *tracker, std::string name, int line) {
+void screen_print_tracker(ez::tracking_wheel* tracker, std::string name, int line) {
   std::string tracker_value = "", tracker_width = "";
   // Check if the tracker exists
   if (tracker != nullptr) {
