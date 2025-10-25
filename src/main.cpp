@@ -85,7 +85,8 @@ void initialize() {
   ez::as::initialize();
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
 
-  opcontrol();
+  
+
 }
 
 /**
@@ -107,7 +108,7 @@ void disabled() {
  * starts.
  */
 void competition_initialize() {
-  opcontrol();
+  // . . .
 }
 
 /**
