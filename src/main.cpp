@@ -5,8 +5,8 @@
 // https://ez-robotics.github.io/EZ-Template/
 /////
 
-ez::tracking_wheel horiz_tracker(5, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels
-ez::tracking_wheel vert_tracker(9, 2.75, 4.0);
+// ez::tracking_wheel horiz_tracker(5, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels
+// ez::tracking_wheel vert_tracker(9, 2.75, 4.0);
 
 // Chassis constructor
 ez::Drive chassis(
@@ -38,8 +38,8 @@ void initialize() {
 
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
-  chassis.odom_tracker_back_set(&horiz_tracker);
-  chassis.odom_tracker_left_set(&vert_tracker);
+  // chassis.odom_tracker_back_set(&horiz_tracker);
+  // chassis.odom_tracker_left_set(&vert_tracker);
 
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
   //  - change `back` to `front` if the tracking wheel is in front of the midline
@@ -84,6 +84,8 @@ void initialize() {
   chassis.initialize();
   ez::as::initialize();
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
+
+  opcontrol();
 }
 
 /**
@@ -105,7 +107,7 @@ void disabled() {
  * starts.
  */
 void competition_initialize() {
-  // . . .
+  opcontrol();
 }
 
 /**
@@ -253,7 +255,8 @@ void opcontrol() {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
 
-    chassis.opcontrol_arcade_standard(ez::SPLIT);  // Tank control
+    chassis.opcontrol_arcade_standard(ez::SPLIT);
+    screen_print("Working");
     // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
