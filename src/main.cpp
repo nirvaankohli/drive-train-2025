@@ -25,6 +25,10 @@ ez::Drive chassis(
 // - `4.0` is the distance from the center of the wheel to the center of the robot
 // ez::tracking_wheel horiz_tracker(8, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels
 // ez::tracking_wheel vert_tracker(9, 2.75, 4.0);   // This tracking wheel is parallel to the drive wheels
+pros::Controller dbg(pros::E_CONTROLLER_MASTER);
+pros::Motor L(12, true);   // true = reversed, match your -12
+pros::Motor R(1, false);   // match your +1
+bool a_latched = false;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -83,6 +87,7 @@ void initialize() {
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
+  pros::lcd::initialize();
 
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
 }
@@ -251,19 +256,33 @@ void opcontrol() {
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
 
   while (true) {
-    // Gives you some extras to make EZ-Template ezier
-    ez_template_extras();
+    // 1) Show comp state the Brain actually sees
+    bool dis  = pros::competition::is_disabled();
+    bool comp = pros::competition::is_connected();
+    int lx = dbg.get_analog(ANALOG_LEFT_Y);
+    int rx = dbg.get_analog(ANALOG_RIGHT_X);
+    pros::lcd::print(0, "dis:%d comp:%d  LY:%4d RX:%4d", dis, comp, lx, rx);
 
-    chassis.opcontrol_arcade_standard(ez::SPLIT);  // Tank control
-    // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
-    // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
-    // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
-    // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
+    // 2) One-button “dumb power” test (ignores joysticks)
+    if (!a_latched && dbg.get_digital_new_press(DIGITAL_A)) {
+      a_latched = true;
+      L.move(127); R.move(127);
+      pros::delay(1000);
+      L.move(0); R.move(0);
+    }
 
-    // . . .
-    // Put more user control code here!
-    // . . .
+    // 3) Raw joystick-to-motor bypass (ignore EZ drive for a moment)
+    int left  = dbg.get_analog(ANALOG_LEFT_Y);
+    int right = dbg.get_analog(ANALOG_RIGHT_Y);
+    if (dbg.get_digital(DIGITAL_X)) {          // Hold X to run raw tank
+      L.move(left);
+      R.move(right);
+    } else {
+      // Normal EZ driver control when X NOT held
+      ez_template_extras();
+      chassis.opcontrol_arcade_standard(ez::SPLIT);
+    }
 
-    pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
+    pros::delay(20);
   }
 }
