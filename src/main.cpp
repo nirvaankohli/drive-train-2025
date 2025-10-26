@@ -5,9 +5,6 @@
 // https://ez-robotics.github.io/EZ-Template/
 /////
 
-// ez::tracking_wheel horiz_tracker(5, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels
-// ez::tracking_wheel vert_tracker(9, 2.75, 4.0);
-
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
@@ -23,8 +20,8 @@ ez::Drive chassis(
 //  - you should get positive values on the encoders going FORWARD and RIGHT
 // - `2.75` is the wheel diameter
 // - `4.0` is the distance from the center of the wheel to the center of the robot
-// ez::tracking_wheel horiz_tracker(8, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels
-// ez::tracking_wheel vert_tracker(9, 2.75, 4.0);   // This tracking wheel is parallel to the drive wheels
+ez::tracking_wheel horiz_tracker(8, 2, 1.5);  // This tracking wheel is perpendicular to the drive wheels
+ez::tracking_wheel vert_tracker(5, 2, 5.75);  // This tracking wheel is parallel to the drive wheels
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -38,8 +35,8 @@ void initialize() {
 
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
-  // chassis.odom_tracker_back_set(&horiz_tracker);
-  // chassis.odom_tracker_left_set(&vert_tracker);
+  chassis.odom_tracker_back_set(&horiz_tracker);
+  chassis.odom_tracker_right_set(&vert_tracker);
 
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
   //  - change `back` to `front` if the tracking wheel is in front of the midline
@@ -63,6 +60,7 @@ void initialize() {
   // chassis.opcontrol_curve_buttons_right_set(pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A);
 
   // Autonomous Selector using LLEMU
+  pros::lcd::print(0, "opcontrol");
   ez::as::auton_selector.autons_add({
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
@@ -83,10 +81,8 @@ void initialize() {
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
+
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
-
-  
-
 }
 
 /**
@@ -258,11 +254,19 @@ void opcontrol() {
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);
     screen_print("Working");
+
     // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
+    chassis.pid_odom_set(24_in, DRIVE_SPEED, true);
+    chassis.pid_wait();
 
+    chassis.pid_odom_set(-12_in, DRIVE_SPEED);
+    chassis.pid_wait();
+
+    chassis.pid_odom_set(-12_in, DRIVE_SPEED);
+    chassis.pid_wait();
     // . . .
     // Put more user control code here!
     // . . .
