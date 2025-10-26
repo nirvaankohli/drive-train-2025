@@ -255,6 +255,8 @@ void opcontrol() {
     chassis.opcontrol_arcade_standard(ez::SPLIT);
     screen_print("Working");
 
+    double DRIVE_SPEED = 60;
+
     // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
