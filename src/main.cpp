@@ -20,8 +20,8 @@ ez::Drive chassis(
 //  - you should get positive values on the encoders going FORWARD and RIGHT
 // - `2.75` is the wheel diameter
 // - `4.0` is the distance from the center of the wheel to the center of the robot
-ez::tracking_wheel horiz_tracker(8, 2, 1.5);  // This tracking wheel is perpendicular to the drive wheels
-ez::tracking_wheel vert_tracker(5, 2, 5.75);  // This tracking wheel is parallel to the drive wheels
+ez::tracking_wheel horiz_tracker(8, 2, 1.83);  // This tracking wheel is perpendicular to the drive wheels
+ez::tracking_wheel vert_tracker(5, 2, -3.96);  // This tracking wheel is parallel to the drive wheels
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -261,6 +261,9 @@ void opcontrol() {
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
+    measure_offsets();
+    ez_screen_task();
+
     chassis.pid_odom_set(24_in, DRIVE_SPEED, true);
     chassis.pid_wait();
 
