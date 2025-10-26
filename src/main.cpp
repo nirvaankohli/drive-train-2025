@@ -37,6 +37,7 @@ void initialize() {
 
   chassis.odom_tracker_back_set(&horiz_tracker);
   chassis.odom_tracker_right_set(&vert_tracker);
+  chassis.odom_xyt_set(0_in, 0_in, 0_deg);
 
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
   //  - change `back` to `front` if the tracking wheel is in front of the midline
@@ -253,7 +254,6 @@ void opcontrol() {
     ez_template_extras();
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);
-    screen_print("Working");
 
     double DRIVE_SPEED = 60;
 
@@ -261,17 +261,13 @@ void opcontrol() {
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
-    measure_offsets();
-    ez_screen_task();
 
-    chassis.pid_odom_set(24_in, DRIVE_SPEED, true);
+    chassis.pid_odom_set({{5_in, 10_in}, fwd, 110});
     chassis.pid_wait();
 
-    chassis.pid_odom_set(-12_in, DRIVE_SPEED);
+    chassis.pid_odom_set({{0_in, 0_in, 45_deg}, fwd, 110});
     chassis.pid_wait();
-
-    chassis.pid_odom_set(-12_in, DRIVE_SPEED);
-    chassis.pid_wait();
+    
     // . . .
     // Put more user control code here!
     // . . .
