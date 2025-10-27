@@ -20,8 +20,8 @@ ez::Drive chassis(
 //  - you should get positive values on the encoders going FORWARD and RIGHT
 // - `2.75` is the wheel diameter
 // - `4.0` is the distance from the center of the wheel to the center of the robot
-ez::tracking_wheel horiz_tracker(8, 2, 1.83);  // This tracking wheel is perpendicular to the drive wheels
-ez::tracking_wheel vert_tracker(5, 2, -3.96);  // This tracking wheel is parallel to the drive wheels
+ez::tracking_wheel horiz_tracker(8, 2, 1.98);  // This tracking wheel is perpendicular to the drive wheels
+ez::tracking_wheel vert_tracker(-5, 2, -3.9);  // This tracking wheel is parallel to the drive wheels
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -262,15 +262,12 @@ void opcontrol() {
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
 
-    chassis.pid_odom_set({{5_in, 10_in}, fwd, 110});
-    chassis.pid_wait();
+    // measure_offsets();
+    // ez_screen_task();
 
-    chassis.pid_odom_set({{0_in, 0_in, 45_deg}, fwd, 110});
-    chassis.pid_wait();
-    
-    // . . .
-    // Put more user control code here!
-    // . . .
+    // auto p = chassis.odom_pose_get();
+    // ez::screen_print("Opcontrol Running", 1);
+    // ez::screen_print("Pose: " + util::to_string_with_precision(p.x) + ", " + util::to_string_with_precision(p.y) + ", " + util::to_string_with_precision(p.theta), 2);
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
