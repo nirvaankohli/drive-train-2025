@@ -1,19 +1,77 @@
 #include "main.h"
 #include "lemlib/api.hpp"
 
+// lemLib setup
+
+
+
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
 // https://ez-robotics.github.io/EZ-Template/
 /////
-
+// 35.25
 // Chassis constructor
+
+
 ez::Drive chassis(
      // These are your drive motors, the first motor is used for sensing!
     {-12, -13, -14},     // Left Chassis Ports (negative port will reverse it!)
     {1, 2, 3},  // Right Chassis Ports (negative port will reverse it!)
     4,      // IMU Port
-    2.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    343);   // Wheel RPM = cartridge * (motor gear / wheel gear)
+    3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    (600 * (36 / 60)));   // Wheel RPM = cartridge * (motor gear / wheel gear)
+
+
+ez::tracking_wheel horiz_tracker(5, 2, 4.0);  // This tracking wheel is perpendicular to the drive wheels
+ez::tracking_wheel vert_tracker(8, 2, 6.125);
+
+void odom_test_routine();
+
+void odom_test_routine() {
+
+    chassis.pid_targets_reset();
+    chassis.drive_imu_reset();
+    chassis.drive_sensor_reset();
+
+    chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
+
+    chassis.odom_xyt_set(0_in, 0_in, 0_deg);
+
+    chassis.pid_odom_set({{24_in, 24_in}, fwd, 110, ez::cw});
+    chassis.pid_wait();
+    
+    
+    
+}
+
+// pros::Motor front_right_motor(3, pros::v5::MotorGears::red);
+// pros::Motor middle_right_motor(1, pros::v5::MotorGears::red);
+// pros::Motor back_right_motor(2, pros::v5::MotorGears::red);
+// pros::Motor front_left_motor(-13, pros::v5::MotorGears::red);
+// pros::Motor middle_left_motor(-12, pros::v5::MotorGears::red);
+// pros::Motor back_left_motor(-14, pros::v5::MotorGears::red);
+
+// pros::MotorGroup right_motor_group({ 3, 1, 2 });
+// pros::MotorGroup left_motor_group({ -13, -12, -14 });
+
+
+// // 8 is X, 5 is Y
+// // 35.2 track width
+
+// lemlib::Drivetrain drivetrain(&left_motor_group, // left motor group
+//                               &right_motor_group, // right motor group
+//                               13.6, 
+//                               lemlib::Omniwheel::NEW_325,
+//                               360, // drivetrain rpm is 360
+//                               2);
+
+// pros::Imu imu(4);
+
+// pros::Rotation horizontal_rotation(8);
+// pros::Rotation vertical_rotation(5);
+// \    
+ 
+
 // Uncomment the trackers you're using here!.
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)
 //  - you should get positive values on the encoders going FORWARD and 
@@ -28,8 +86,10 @@ ez::tracking_wheel vert_tracker(-5, 2, -3.9);  // This tracking wheel is paralle
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
+
 void initialize() {
-  // Print our branding over your terminal :D
+
   ez::ez_template_print();
 
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
@@ -54,6 +114,7 @@ void initialize() {
 
   // Set the drive to your own constants from autons.cpp!
   default_constants();
+  
 
   // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
   // chassis.opcontrol_curve_buttons_left_set(pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT);  // If using tank, only the left side is used.
